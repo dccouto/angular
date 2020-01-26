@@ -1,0 +1,27 @@
+<h1>{{ title }}</h1>
+
+<ul>
+  <li *ngFor="let t of todos">
+    {{ t.id }} - {{ t.nome }} => {{ t.status }}
+    <button *ngIf="!t.status" (click)="marcarComConcluido(t)">CONCLUIR</button>
+    <button *ngIf="t.status" (click)="marcarComoNaoConcluido(t)">REFAZER</button>
+    <button (click)="remove(t)">REMOVER</button>
+  </li>
+</ul>
+
+<form [formGroup]="form">
+  <fieldset>
+    <label>tarefa</label>
+    <input type="text" formControlName='title' maxlength="20">
+    <button>Salvar</button>
+  </fieldset>
+</form>
+
+<!-- 
+tipos de bind:
+()= HTML > TS
+[]= TS > HTML
+[()] = TS <> HTML
+
+ -->
+<router-outlet></router-outlet>
