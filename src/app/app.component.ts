@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 
 export class AppComponent {
+	
 
 	public todos: Todo[] = [];
 	public title: String = "Minhas Tarefas";
@@ -28,6 +29,8 @@ export class AppComponent {
 		])]
 		})
 
+		this.load()
+
   	}
 
 	// reseta o formulário do html
@@ -40,27 +43,46 @@ export class AppComponent {
 		const title = this.form.controls['title'].value;
 		const id = this.todos.length + 1;
 		this.todos.push(new Todo(id, title, false));
-
+		this.save();
 		this.clear();
 
 	}
-
+	// Remove item da lista
 	remove(todo: Todo){
 		const index = this.todos.indexOf(todo);
 		if(index !== -1){
 			this.todos.splice(index,1);
+			//chama o método que salva no localStorage
+			this.save();
 		}
+		
 	}
 
 	marcarComConcluido(todo: Todo){
 		todo.status = true;
+		this.save()
 	}
-
+	
 	marcarComoNaoConcluido(todo: Todo){
 		const index = this.todos.indexOf(todo);
 
 		this.todos[index].status = false;
+		this.save();
 	}
+
+	//chama o método que salva no localStorage
+	save(){
+		const dados = JSON.stringify(this.todos);
+		localStorage.setItem('tarefas', dados);
+	}
+	// Carrega do local Storage para o objeto 'todos'
+	load(){
+		
+		const dados = localStorage.getItem('tarefas');
+		this.todos = JSON.parse(dados);
+		
+	}
+	
 
 }
 
