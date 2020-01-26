@@ -1,6 +1,7 @@
 <h1>{{ title }}</h1>
 
 <ul>
+  <p *ngIf="todos.length ==0"><small>Você ainda não inseriu nenhuma tarefa!</small></p>
   <li *ngFor="let t of todos">
     {{ t.id }} - {{ t.nome }} => {{ t.status }}
     <button *ngIf="!t.status" (click)="marcarComConcluido(t)">CONCLUIR</button>
@@ -12,8 +13,11 @@
 <form [formGroup]="form">
   <fieldset>
     <label>tarefa</label>
-    <input type="text" formControlName='title' maxlength="20">
-    <button>Salvar</button>
+    <input type="text" formControlName='title' maxlength="20" placeholder="Título da Tarefa">
+    <!-- "form.controls.title.pristine" é uma variável que existe do do form.control que verifica se o texto já foi modificado -->
+    <small *ngIf="form.controls.title.invalid && !form.controls.title.pristine">Este campo deve conter entre 3 e 20 caracteres</small>
+    <!-- <button [disabled]="form.invalid" um evento do TS > HTML -->
+    <button [disabled]="form.invalid" (click)="add()">Salvar</button>
   </fieldset>
 </form>
 
